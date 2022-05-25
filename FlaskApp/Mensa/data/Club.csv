@@ -1,0 +1,4 @@
+ClubID,Name,Details,Address1,Address2,PostCode,Phonenumber,MinPrice
+1,Scotch,Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat,James Street,London,W1 3JK,07778987653,200
+2,Maddox,Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat,Russel Square,Euston,E2 4KL,07778987653,150
+3,Lux,Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat,20 Duke Street,Essex,4LX 2BZ,07778987653,450

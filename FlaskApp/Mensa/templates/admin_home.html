@@ -1,0 +1,22 @@
+{% extends "admin_portal.html" %}
+{% block content %}
+<div class="p-[2%]">
+    <div class="text-3xl font-bold">
+        Welcome, {{user.UserName}}
+    </div>
+    <div class="py-2">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Change password
+        </button>
+    </div>
+    <div class="py-2">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="logout">
+            Logout
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

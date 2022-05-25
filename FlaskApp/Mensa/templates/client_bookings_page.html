@@ -1,0 +1,205 @@
+{% extends "client_portal.html" %}
+
+{% block content %}
+<div class="p-[2%] overflow-auto">
+    <div class="flex justify-between">
+        <h1 class="font-bold text-3xl pb-3">
+            Availability
+        </h1>
+
+        <div>
+            <button
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button" id="add-slot">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="slot-cards">
+        {%for slot in slots%}
+        <!-- availability slot card -->
+        <div
+            class="border border-3 border-black rounded-lg p-2 grid grid-cols-8 my-2 flex items-center justify-center gap-3">
+            <div class="col-span-6">
+                <div class="font-medium">
+                    {{slot.Table.Alias}}
+                </div>
+                <div>
+                    {{slot.StartDate}}
+                </div>
+                <div>
+                    {{slot.StartTime}} - {{slot.EndTime}}
+                </div>
+                <div>
+                    £{{slot.Price}}
+                </div>
+            </div>
+            <div>
+                {% if slot.isBooked %}
+                Booked #{{slot.BookingID}}
+                {% else %}
+                Available
+                {% endif %}
+            </div>
+            <div class="flex justify-center">
+                <button id="delete-slot" onclick="deleteSlot('{{slot.SlotID}}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+
+</div>
+<div class="p-[2%] overflow-auto" id="booking-cards">
+    <div class="flex justify-between">
+        <h1 class="font-bold text-3xl pb-3">
+            Bookings
+        </h1>
+    </div>
+    {%for booking in bookings%}
+    <!-- booking card -->
+    <div
+        class="border border-3 border-black rounded-lg p-2 grid grid-cols-8 my-2 flex items-center justify-center gap-3">
+        <div class="flex justify-center">
+            #{{booking.BookingID}}
+        </div>
+        <div class="col-span-5">
+            <div class="font-medium">
+                {{booking.User.FirstName}} {{booking.User.LastName}}
+            </div>
+            <div>
+                {{booking.Slot.StartDate}}
+            </div>
+            <div>
+                {{booking.Slot.StartTime}} - {{booking.Slot.EndTime}}
+            </div>
+            <div>
+                Confirmed : {{booking.isConfirmed}}
+            </div>
+        </div>
+        <div>
+
+            {{booking.Slot.Table.Alias}}
+        </div>
+        <div>
+            {%if booking.isConfirmed%}
+            {%else%}
+            
+                <button id="accept-booking" class="bg-green-500 rounded-md p-1 my-1" value="{{booking.BookingID}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+            
+                <button id="reject-booking" class="bg-red-500 rounded-md p-1 my-1" value="{{booking.BookingID}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            {%endif%}
+        </div>
+    </div>
+    {%endfor%}
+    <!-- add new slot modal -->
+    <div>
+        <div class="bg-black bg-opacity-50 hidden absolute inset-0 flex justify-center items-center"
+            id="add-slot-overlay">
+            <div class="bg-white p-10 rounded-[50px]">
+                <div class="text-xl font-bold pb-5 flex justify-between">
+                    Add new availability slot
+                    <button id="close-overlay">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                </div>
+                <div>
+                    <form class="flex flex-col" id="new-table">
+                        <div class="flex justify-center">
+                            <div class="mb-3 xl:w-96">
+                                <select name="tables" id="table-selector" class="form-select appearance-none
+                                                      block
+                                                      w-full
+                                                      px-3
+                                                      py-4
+                                                      text-base
+                                                      font-normal
+                                                      text-gray-700
+                                                      bg-white bg-clip-padding bg-no-repeat
+                                                      border border-solid border-gray-300
+                                                      rounded
+                                                      transition
+                                                      ease-in-out
+                                                      m-0
+                                                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    aria-label="Default select example">
+                                    <option selected>Select a Table</option>
+                                    {% for table in tables %}
+                                    <option value="{{ table.TableID }}">{{ table.Alias }}</option>
+                                    {% endfor %} 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-6 pt-3 rounded bg-gray-200">
+                            <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="capacity">Date</label>
+                            <input type="text" id="start-date" placeholder="yyyy-mm-dd"
+                                class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="timepicker relative form-floating mb-3 xl:w-96" data-mdb-with-icon="false" id="input-toggle-timepicker">
+                                <input type="text" id="start-time"
+                                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    placeholder="Select a date" data-mdb-toggle="input-toggle-timepicker" />
+                                <label for="floatingInput" class="text-gray-700">Select a start time</label>
+                            </div>
+                        </div>
+                        <div class="mb-6 pt-3 rounded bg-gray-200">
+                            <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="capacity">End Date</label>
+                            <input type="text" id="end-date" placeholder="yyyy-mm-dd"
+                                class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="timepicker relative form-floating mb-3 xl:w-96" data-mdb-with-icon="false" id="input-toggle-timepicker">
+                                <input type="text" id="end-time"
+                                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    placeholder="Select a date" data-mdb-toggle="input-toggle-timepicker" />
+                                <label for="floatingInput" class="text-gray-700">Select an end time</label>
+                            </div>
+                        </div>
+                        <div class="mb-6 pt-3 rounded bg-gray-200">
+                            <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="capacity">Price</label>
+                            <input type="text" id="slot-price"
+                                class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-bold p-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+                                type="submit" id="add-slot-confirm">Add</button>
+                        </div>
+                        <div class="flex justify-center">
+                        
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/bookings.js') }}"></script>
+{% endblock %}

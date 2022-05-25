@@ -1,0 +1,1 @@
+web: gunicorn "Mensa:create_app()"

@@ -1,0 +1,68 @@
+<!-- login page adapted from https://github.com/davidgrzyb/tailwind-login-template -->
+<!doctype html>
+<html>
+
+<head>
+  {% include 'components/header.html' %}
+
+  <title>Mensa</title>
+</head>
+
+<body class="body-bg bg-black min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+  <header class="max-w-lg mx-auto">
+    <a href="#">
+      <img src="{{ url_for('static', filename='images/logo.png') }}">
+    </a>
+  </header>
+
+  <main class="bg-black text-white border-4 rounded-[40px] max-w-lg mx-auto p-8 md:p-12 my-10 shadow-2xl">
+    <section>
+      <h3 class="font-bold text-2xl">Sign in to your account</h3>
+    </section>
+    <div>
+
+      <div class="flex justify-between mt-4">
+        <form name="typeForm">
+        <div class="flex p-2 justify-between">
+
+          <div class="flex items-center mr-4">
+            <input type="radio" value="admin" name="typeRadio"
+              class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="red-radio" class="ml-2 text-sm font-medium text-white">Admin</label>
+          </div>
+          <div class="flex items-center mr-4">
+            <input type="radio" value="client" name="typeRadio" checked
+              class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="red-radio" class="ml-2 text-sm font-medium text-white">Club Staff</label>
+          </div>
+        </div>
+        </form>
+
+      </div>
+
+    </div>
+
+    <section class="mt-10">
+      <form class="flex flex-col" id="login-form">
+        <div class="mb-6 pt-3 rounded bg-gray-200">
+          <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Email</label>
+          <input type="text" id="email"
+            class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+        </div>
+        <div class="mb-6 pt-3 rounded bg-gray-200">
+          <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Password</label>
+          <input type="password" id="password"
+            class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+        </div>
+        <button
+          class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+          type="submit">Sign In</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+  {% include 'components/footer.html' %}
+</body>
+
+</html>

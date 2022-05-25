@@ -1,0 +1,4 @@
+ClubUserID,FirstName,LastName,Email,Password,ClubID
+3,Sarah,White,sarah@scotch.com,sha256$pzbIPz2F3RL8Kpi6$b70e84a48467972e01e2952730d5ad1d5bd377390e622c4dc031b58ffc4bc970,1
+4,James,Green,james@maddox.com,sha256$jvzBxa7sVhmpYFd7$62279ebdb616c75f711b80a56114665efedda5ad71955fca95bad980c5e5efbc,2
+5,Jane,Doe,jane@lux.com,sha256$lo7sRtyXuX3tsL9W$ff13f7c54ed9716c9f99d38c69d610f12f9579f3963b423f886888bf803d9c13,3
