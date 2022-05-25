@@ -105,7 +105,6 @@ const App = () => {
     }),
     []
   );
-  console.log("hi")
 
   const getTokens = useCallback(async () => {
     const username = await getValueFor("userName");
